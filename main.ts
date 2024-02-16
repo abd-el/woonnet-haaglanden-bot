@@ -10,6 +10,51 @@ async function getData(){
     return raw;
 }
 
+async function sendDiscordMessage(unitData: SimplifiedWoonnetUnitData){
+    const message = {
+        embeds: [{
+            title: "New (non-inschrijfduur) Social Housing Unit Available!",
+            color: 5814783,
+            fields: [
+                {
+                    name: "Total Rent",
+                    value: `€${unitData.totalRent}`,
+                    inline: false
+                },
+                {
+                    name: "Municipality",
+                    value: unitData.municipality,
+                    inline: false
+                },
+                {
+                    name: "Model Category",
+                    value: unitData.modelCategorie,
+                    inline: false
+                },
+                {
+                    name: "Publication Date",
+                    value: unitData.publicationDate,
+                    inline: false
+                },
+                {
+                    name: "Details",
+                    value: `${unitData.url}`,
+                    inline: false
+                }
+            ],
+            timestamp: new Date().toISOString()
+        }]
+    };
+
+    await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message)
+    })
+
+}
 async function main(): Promise<void> {
     const data = await getData();
 
@@ -23,52 +68,11 @@ async function main(): Promise<void> {
         };
 
         if (differenceInMinutes(simplifiedData.publicationDate, new Date()) > 60) {
-           continue;
+           // continue;
         }
 
         if (unitData.model.modelCategorie.code !== 'inschrijfduur') {
-            const message = {
-                embeds: [{
-                    title: "New (non-inschrijfduur) Social Housing Unit Available!",
-                    color: 5814783,
-                    fields: [
-                        {
-                            name: "Total Rent",
-                            value: `€${simplifiedData.totalRent}`,
-                            inline: false
-                        },
-                        {
-                            name: "Municipality",
-                            value: simplifiedData.municipality,
-                            inline: false
-                        },
-                        {
-                            name: "Model Category",
-                            value: simplifiedData.modelCategorie,
-                            inline: false
-                        },
-                        {
-                            name: "Publication Date",
-                            value: simplifiedData.publicationDate,
-                            inline: false
-                        },
-                        {
-                            name: "Details",
-                            value: `${simplifiedData.url}`,
-                            inline: false
-                        }
-                    ],
-                    timestamp: new Date().toISOString()
-                }]
-            };
-
-            await fetch(webhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(message)
-            })
+            await sendDiscordMessage(simplifiedData);
         }
     }
 }
