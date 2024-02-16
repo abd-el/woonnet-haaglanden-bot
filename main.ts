@@ -68,7 +68,7 @@ async function main(): Promise<void> {
         };
 
         if (differenceInMinutes(simplifiedData.publicationDate, new Date()) > 60) {
-           // continue;
+            continue;
         }
 
         if (unitData.model.modelCategorie.code !== 'inschrijfduur') {
