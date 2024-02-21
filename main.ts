@@ -67,11 +67,13 @@ async function main(): Promise<void> {
             publicationDate: new Date(`${unitData.publicationDate}+01:00`),
         };
 
-        if (differenceInMinutes(simplifiedData.publicationDate, new Date()) > 60) {
+        if (differenceInMinutes(simplifiedData.publicationDate, new Date()) > 10) {
             continue;
         }
 
-        if (unitData.model.modelCategorie.code !== 'inschrijfduur') {
+        const code = unitData.model.modelCategorie.code;
+
+        if (code !== 'inschrijfduur' && code !== 'woningruil') {
             await sendDiscordMessage(simplifiedData);
         }
     }
