@@ -5,13 +5,13 @@ const webhookUrl = 'https://discord.com/api/webhooks/1208085535038513192/Rsl___7
 
 const rootUrls = [
     `https://www.woonnet-haaglanden.nl`, // THE HAGUE
-    `https://www.woninghuren.nl/` // ENSCHEDE
+    `https://www.woninghuren.nl` // ENSCHEDE
 ]
 
 async function getData(){
     const collectedData: WoonnetUnitData[] = [];
 
-    for (const rootUrl in rootUrls) {
+    for (const rootUrl of rootUrls) {
         const response = await fetch(`${rootUrl}/portal/object/frontend/getallobjects/format/json`);
         const raw: RawResponse = await response.json();
         const data = raw.result;
