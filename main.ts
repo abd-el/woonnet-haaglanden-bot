@@ -1,13 +1,28 @@
-import {RawResponse, SimplifiedWoonnetUnitData} from "./types";
+import {RawResponse, SimplifiedWoonnetUnitData, WoonnetUnitData} from "./types";
 import {differenceInMinutes} from "./util";
 
 const webhookUrl = 'https://discord.com/api/webhooks/1208085535038513192/Rsl___7aMerTCXptmGCScM6YMSZGWjLEBrFMXBkObNgkWEDYmZQ3W_Jv3xZdUaCvh_rd';
 
+const rootUrls = [
+    `https://www.woonnet-haaglanden.nl`, // THE HAGUE
+    `https://www.woninghuren.nl/` // ENSCHEDE
+]
+
 async function getData(){
-    const response = await fetch('https://www.woonnet-haaglanden.nl/portal/object/frontend/getallobjects/format/json',
-    );
-    const raw: RawResponse = await response.json();
-    return raw;
+    const collectedData: WoonnetUnitData[] = [];
+
+    for (const rootUrl in rootUrls) {
+        const response = await fetch(`${rootUrl}/portal/object/frontend/getallobjects/format/json`);
+        const raw: RawResponse = await response.json();
+        const data = raw.result;
+
+        for (const unitData of data) {
+            unitData.rootUrl = rootUrl;
+            collectedData.push(unitData);
+        }
+    }
+
+    return collectedData;
 }
 
 async function sendDiscordMessage(unitData: SimplifiedWoonnetUnitData){
@@ -58,12 +73,12 @@ async function sendDiscordMessage(unitData: SimplifiedWoonnetUnitData){
 async function main(): Promise<void> {
     const data = await getData();
 
-    for (const unitData of data.result) {
+    for (const unitData of data) {
         const simplifiedData: SimplifiedWoonnetUnitData = {
             totalRent: unitData.totalRent,
             municipality: unitData.municipality.name,
             modelCategorie: unitData.model.modelCategorie.code,
-            url: `https://www.woonnet-haaglanden.nl/aanbod/nu-te-huur/te-huur/details/${unitData.urlKey}`,
+            url: `${unitData.rootUrl}/aanbod/nu-te-huur/te-huur/details/${unitData.urlKey}`,
             publicationDate: new Date(`${unitData.publicationDate}+01:00`),
         };
 

@@ -293,7 +293,8 @@ export interface WoonnetUnitData {
     uitlegTekstAanbiedproces: string,
     id: string,
     isGepubliceerd: boolean,
-    isInGepubliceerdeVerzameladvertentie: boolean
+    isInGepubliceerdeVerzameladvertentie: boolean,
+    rootUrl: string
 }
 
 export interface RawResponse {
