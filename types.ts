@@ -294,10 +294,15 @@ export interface WoonnetUnitData {
     id: string,
     isGepubliceerd: boolean,
     isInGepubliceerdeVerzameladvertentie: boolean,
-    rootUrl: string
+    url: WoonnetUrl
 }
 
 export interface RawResponse {
     sAngularServiceData: string,
     result: Array<WoonnetUnitData>
+}
+
+export type WoonnetUrl = {
+    rootUrl: string,
+    extendedUrl: string
 }
