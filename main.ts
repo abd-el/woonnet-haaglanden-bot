@@ -11,6 +11,10 @@ const woonnetUrls: WoonnetUrl[] = [
     {
         rootUrl: `https://www.woninghuren.nl`, // ENSCHEDE
         extendedUrl: 'https://www.woninghuren.nl/aanbod/te-huur/details'
+    },
+    {
+        rootUrl: `https://www.thuisindeachterhoek.nl`, // ACHTERHOEK
+        extendedUrl: 'https://www.thuisindeachterhoek.nl/aanbod/te-huur/details/'
     }
 ]
 
