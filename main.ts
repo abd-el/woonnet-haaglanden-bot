@@ -15,7 +15,11 @@ const woonnetUrls: WoonnetUrl[] = [
     {
         rootUrl: `https://www.thuisindeachterhoek.nl`, // ACHTERHOEK
         extendedUrl: 'https://www.thuisindeachterhoek.nl/aanbod/te-huur/details/'
-    }
+    },
+    {
+        rootUrl: `https://www.hureninhollandrijnland.nl`, // RIJNLAND
+        extendedUrl: 'https://www.hureninhollandrijnland.nl/aanbod/nu-te-huur/huurwoningen/details'
+    },
 ]
 
 async function getData(){
