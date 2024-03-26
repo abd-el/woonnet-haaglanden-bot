@@ -47,7 +47,7 @@ async function sendDiscordMessage(unitData: SimplifiedWoonnetUnitData){
             fields: [
                 {
                     name: "Total Rent",
-                    value: `€${unitData.totalRent}`,
+                    value: `€ ${unitData.totalRent}`,
                     inline: false
                 },
                 {
@@ -98,6 +98,10 @@ async function main(): Promise<void> {
 
         if (differenceInMinutes(simplifiedData.publicationDate, new Date()) > 10) {
             continue;
+        }
+
+        if (simplifiedData.totalRent > 879.66 || simplifiedData.totalRent < 150) {
+            return;
         }
 
         const code = unitData.model.modelCategorie.code;
