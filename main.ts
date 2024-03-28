@@ -9,17 +9,17 @@ const woonnetUrls: WoonnetUrl[] = [
         extendedUrl: 'https://www.woonnet-haaglanden.nl/aanbod/nu-te-huur/te-huur/details'
     },
     {
-        rootUrl: `https://www.woninghuren.nl`, // ENSCHEDE
-        extendedUrl: 'https://www.woninghuren.nl/aanbod/te-huur/details'
-    },
-    {
-        rootUrl: `https://www.thuisindeachterhoek.nl`, // ACHTERHOEK
-        extendedUrl: 'https://www.thuisindeachterhoek.nl/aanbod/te-huur/details/'
-    },
-    {
         rootUrl: `https://www.hureninhollandrijnland.nl`, // RIJNLAND
         extendedUrl: 'https://www.hureninhollandrijnland.nl/aanbod/nu-te-huur/huurwoningen/details'
     },
+    // {
+    //     rootUrl: `https://www.woninghuren.nl`, // ENSCHEDE
+    //     extendedUrl: 'https://www.woninghuren.nl/aanbod/te-huur/details'
+    // },
+    // {
+    //     rootUrl: `https://www.thuisindeachterhoek.nl`, // ACHTERHOEK
+    //     extendedUrl: 'https://www.thuisindeachterhoek.nl/aanbod/te-huur/details/'
+    // },
 ]
 
 async function getData(){
