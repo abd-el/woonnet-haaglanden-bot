@@ -106,7 +106,11 @@ async function main(): Promise<void> {
 
         const code = unitData.model.modelCategorie.code;
 
-        if (code !== 'inschrijfduur' && code !== 'woningruil') {
+        if (code !== 'inschrijfduur' &&
+            code !== 'woningruil' &&
+            code !== 'woonwagen' &&
+            code !== 'maatwerk')
+        {
             await sendDiscordMessage(simplifiedData);
         }
     }

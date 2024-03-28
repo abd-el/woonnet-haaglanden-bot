@@ -231,7 +231,7 @@ export interface WoonnetUnitData {
     model: {
         modelCategorie: {
             icon: string,
-            code: 'inschrijfduur' | 'random' | 'woningruil' | string,
+            code: 'inschrijfduur' | 'random' | 'woningruil' | 'maatwerk' | 'woningwagen' | string,
             toonOpWebsite: boolean,
             id: string
         },
