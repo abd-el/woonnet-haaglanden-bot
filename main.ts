@@ -1,5 +1,7 @@
 import {RawResponse, SimplifiedWoonnetUnitData, WoonnetUnitData, WoonnetUrl} from "./types";
 import {differenceInMinutes} from "./util";
+import { HATWoning } from "./types/Woningtype";
+import { SeniorenDoelgroep } from "./types/Doelgroep";
 
 const webhookUrl = 'https://discord.com/api/webhooks/1208085535038513192/Rsl___7aMerTCXptmGCScM6YMSZGWjLEBrFMXBkObNgkWEDYmZQ3W_Jv3xZdUaCvh_rd';
 
@@ -39,7 +41,7 @@ async function getData(){
     return collectedData;
 }
 
-async function sendDiscordMessage(unitData: SimplifiedWoonnetUnitData){
+async function sendDiscordMessage(unitData: SimplifiedWoonnetUnitData, note: string): Promise<void> {
     const message = {
         embeds: [{
             title: "New (non-inschrijfduur) Social Housing Unit Available!",
@@ -69,6 +71,11 @@ async function sendDiscordMessage(unitData: SimplifiedWoonnetUnitData){
                     name: "Details",
                     value: `${unitData.url}`,
                     inline: false
+                },
+                {
+                    name: "Note",
+                    value: note,
+                    inline: false
                 }
             ],
             timestamp: new Date().toISOString()
@@ -96,23 +103,28 @@ async function main(): Promise<void> {
             publicationDate: new Date(`${unitData.publicationDate}+01:00`),
         };
 
-        if (differenceInMinutes(simplifiedData.publicationDate, new Date()) > 10) {
-            continue;
-        }
+        if (differenceInMinutes(simplifiedData.publicationDate, new Date()) > 9) continue;
 
-        if (simplifiedData.totalRent > 879.66 || simplifiedData.totalRent < 150) {
-            return;
-        }
+        if (simplifiedData.totalRent > 879.66 || simplifiedData.totalRent < 150) return;
 
         const code = unitData.model.modelCategorie.code;
+        const undesiredCodes = ['inschrijfduur', 'woningruil', 'woningwagen', 'maatwerk'];
+        if (undesiredCodes.includes(code)) return;
 
-        if (code !== 'inschrijfduur' &&
-            code !== 'woningruil' &&
-            code !== 'woonwagen' &&
-            code !== 'maatwerk')
-        {
-            await sendDiscordMessage(simplifiedData);
+        if (unitData.dwellingType.id === HATWoning.id) {
+            return await sendDiscordMessage(simplifiedData, 'HAT-woning dus misschien max 22 jaar');
         }
+
+        let note = '-';
+        if (unitData.doelgroepen.length === 1) {
+            if (unitData.doelgroepen[0].id === SeniorenDoelgroep.id) {
+                return;
+            }
+        } else if (unitData.doelgroepen.length > 1) {
+            note = `meerdere doelgroepen: ${unitData.doelgroepen.map(d => d.code).join(', ')}`;
+        }
+
+        return await sendDiscordMessage(simplifiedData, note);
     }
 }
 
