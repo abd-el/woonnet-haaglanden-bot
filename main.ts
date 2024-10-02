@@ -1,9 +1,11 @@
-import {RawResponse, SimplifiedWoonnetUnitData, WoonnetUnitData, WoonnetUrl} from "./types";
-import {differenceInMinutes} from "./util";
+import { differenceInMinutes } from "./util";
 import { HATWoning } from "./types/Woningtype";
 import { SeniorenDoelgroep } from "./types/Doelgroep";
+import { RawResponse, SimplifiedWoonnetUnitData, WoonnetUnitData, WoonnetUrl } from "./types/web";
+import { config } from "dotenv";
+config();
 
-const webhookUrl = 'https://discord.com/api/webhooks/1208085535038513192/Rsl___7aMerTCXptmGCScM6YMSZGWjLEBrFMXBkObNgkWEDYmZQ3W_Jv3xZdUaCvh_rd';
+const webhookUrl = process.env.DISCORD_WEBHOOK_URL as string;
 
 const woonnetUrls: WoonnetUrl[] = [
     {
@@ -24,7 +26,7 @@ const woonnetUrls: WoonnetUrl[] = [
     // },
 ]
 
-async function getData(){
+async function getData() {
     const collectedData: WoonnetUnitData[] = [];
 
     for (const url of woonnetUrls) {
@@ -89,7 +91,6 @@ async function sendDiscordMessage(unitData: SimplifiedWoonnetUnitData, note: str
         },
         body: JSON.stringify(message)
     })
-
 }
 async function main(): Promise<void> {
     const data = await getData();

@@ -54,7 +54,6 @@ export const Portiekwoning: Woningtype = {
     localizedName: "Portiekwoning"
 }
 
-// Er is misschien een 22-jaar max leeftijd voor deze woning
 export const HATWoning: Woningtype = {
     categorie: "woning",
     huurprijsDuurActief: false,

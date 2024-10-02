@@ -1,5 +1,6 @@
-import { Doelgroep } from "./types/Doelgroep";
-import { Woningtype } from "./types/Woningtype";
+import { Doelgroep } from "./Doelgroep";
+import { Woningtype } from "./Woningtype";
+
 
 export interface SimplifiedWoonnetUnitData {
     municipality: string,
