@@ -26,6 +26,8 @@ const woonnetUrls: WoonnetUrl[] = [
     // },
 ]
 
+const ignoreOlderThanMinutes = 9;
+
 async function getData() {
     const collectedData: WoonnetUnitData[] = [];
 
@@ -104,7 +106,7 @@ async function main(): Promise<void> {
             publicationDate: new Date(`${unitData.publicationDate}+01:00`),
         };
 
-        if (differenceInMinutes(simplifiedData.publicationDate, new Date()) > 9) continue;
+        if (differenceInMinutes(simplifiedData.publicationDate, new Date()) > ignoreOlderThanMinutes) continue;
 
         if (simplifiedData.totalRent > 879.66 || simplifiedData.totalRent < 150) return;
 
